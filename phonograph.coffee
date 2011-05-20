@@ -48,6 +48,7 @@ class Record extends Phonograph
 			if @tracks.length > 0 and @tracks.length - 1 != @current
 				@current++
 				@play()
+				@onTrackChanged
 
 		super element
 
@@ -75,3 +76,6 @@ class Record extends Phonograph
 	clear: -> @tracks = []
 
 	savePosition: -> @lastSavedPosition = @audio.currentTime
+
+	trackChanged: (callback) ->
+		@onTrackChanged = callback
