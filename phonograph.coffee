@@ -44,13 +44,13 @@ class Record extends Phonograph
 		@tracks = []
 		@current = 0
 
-		@audio.addEventListener "ended", () =>
+		super element
+		
+		@audio.addEventListener "ended", =>
 			if @tracks.length > 0 and @tracks.length - 1 != @current
 				@current++
 				@play()
 				@onTrackChanged()
-
-		super element
 
 	play: (tracks) ->
 		if tracks?
