@@ -48,7 +48,7 @@ class Record extends Phonograph
 			if @tracks.length > 0 and @tracks.length - 1 != @current
 				@current++
 				@play()
-				@onTrackChanged
+				@onTrackChanged()
 
 		super element
 
