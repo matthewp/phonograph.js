@@ -56,86 +56,81 @@ var Phonograph = {
 
 };
 
-var rec = {
+var Record = Object.create(Phonograph);
   
-  init: function() {
-    this.lastSavedPosition = 0;
-    this.tracks = [];
-    this.current = 0;
-    this.super = Phonograph.prototype;
+Record.init = function() {
+  this.lastSavedPosition = 0;
+  this.tracks = [];
+  this.current = 0;
+  this.super = Phonograph;
 
-    this.super.init.call(this);
+  this.super.init.call(this);
 
-    var self = this;
-    ael(self.audio, 'ended', function(e) {
-      
-      var t = self.tracks;
+  var self = this;
+  ael(self.audio, 'ended', function(e) {
+    
+    var t = self.tracks;
 
-      if(t.length > 0 && t.length - 1 !== self.current) {
-        self.current++;
-        self.play();
-        self.onTrackChanged();
-      }
-
-    }, false);
-
-  },
-
-  playAt: function(position) {
-    var spa = this.super.playAt.call;
-
-    if(!exists(position)) {
-      spa(this, this.lastSavedPosition, 
-        this.tracks[this.current]);
-
-      return;
+    if(t.length > 0 && t.length - 1 !== self.current) {
+      self.current++;
+      self.play();
+      self.onTrackChanged();
     }
 
-    if(this.tracks.length > 0) {
-      spa(this, position, this.tracks[this.current]);
-    }
-  },
-
-  play: function(tracks) {
-    if(exists(tracks)) {
-      this.clear();
-      this.add(tracks);
-      this.current = 0;
-    }
-
-    if(tracks.length > 0) {
-      this.super.play.call(this, this.tracks[this.current]);
-    }
-  },
-
-  add: function(urls) {
-    if(!isArray(urls)) {
-      this.tracks.push(urls);
-
-      return;
-    }
-
-    var add = this.add;
-    urls.forEach(function(url) {
-      add(url);
-    });
-  },
-
-  clear: function() {
-    this.tracks = [];
-  },
-
-  savePosition: function() {
-    this.lastSavedPosition = this.audio.currentTime;
-  },
-
-  trackChanged: function(callback) {
-    this.onTrackChanged = callback;
-  }
-
+  }, false);
 };
 
-var Record = Object.create(Phonograph, rec);
+Record.playAt = function(position) {
+  var spa = this.super.playAt.call;
+
+  if(!exists(position)) {
+    spa(this, this.lastSavedPosition, 
+      this.tracks[this.current]);
+
+    return;
+  }
+
+  if(this.tracks.length > 0) {
+    spa(this, position, this.tracks[this.current]);
+  }
+};
+
+Record.play = function(tracks) {
+  if(exists(tracks)) {
+    this.clear();
+    this.add(tracks);
+    this.current = 0;
+  }
+
+  if(tracks.length > 0) {
+    this.super.play.call(this, this.tracks[this.current]);
+  }
+};
+
+Record.add = function(urls) {
+  if(!isArray(urls)) {
+    this.tracks.push(urls);
+
+    return;
+  }
+
+  var add = this.add;
+  urls.forEach(function(url) {
+    add(url);
+  });
+};
+
+Record.clear = function() {
+  this.tracks = [];
+};
+
+Record.savePosition = function() {
+    this.lastSavedPosition = this.audio.currentTime;
+};
+
+Record.trackChanged = function(callback) {
+  this.onTrackChanged = callback;
+};
 
 Phonograph.create = Record.create = function() {
   var o = Object.create(this);
