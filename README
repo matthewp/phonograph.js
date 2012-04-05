@@ -1,12 +1,9 @@
-This small coffeescript/javascript library is an easy way to manage a queue of items you are playing.
-
-<audio id="my-player"/>
+This small JavaScript library is an easy way to manage a queue of items you are playing.
 
 <script type="text/javascript">
-	elem = document.getElementById("my-player");
-	player = new Phonograph(elem);
+  var player = Phonograph.create();
 	
-	tracks = [ 'http://some.mp3', 'http://some-other.mp3' ];
+	var tracks = [ 'http://some.mp3', 'http://some-other.mp3' ];
 	player.trackChanged(function() {
 		alert("We're now playing a new track!");
 	});
